@@ -1,0 +1,46 @@
+# Java
+*.class
+*.jar
+*.war
+*.ear
+
+# Eclipse
+.project
+.classpath
+.settings
+
+# IDE / Editor
+/.idea/
+*.iml
+*.iws
+*.ipr
+/.vscode/
+/.classpath
+/.project
+/.settings/
+
+# Log files
+*.log
+
+# Temporary files
+*.tmp
+*.bak
+*.swp
+
+# Jetty and Tomcat specific files
+/.jetty/
+*.war
+*.ear
+
+# IntelliJ IDEA specific files
+/.idea/
+/*.iml
+
+# Eclipse specific files
+/.metadata/
+/*.tmp
+/.recommenders/
+
+# Other
+.DS_Store
+Thumbs.db
