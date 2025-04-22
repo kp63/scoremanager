@@ -7,7 +7,7 @@
 	<script>
 		// JavaScriptを使用して即座にログインページへリダイレクト
 		// /exam/scoremanager/Login.actionへユーザーを転送
-		location.href = "/exam/scoremanager/Login.action";
+		location.href = "${pageContext.request.contextPath}/scoremanager/Login.action";
 	</script>
 </head>
 <body>
