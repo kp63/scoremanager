@@ -26,10 +26,6 @@ public class SubjectUpdateAction extends Action {
         // 科目情報を取得
         SubjectDao sDao = new SubjectDao();
         Subject subject = sDao.get(cd, teacher.getSchool());
-        if (subject == null) {
-            req.getRequestDispatcher("/error.jsp").forward(req, res);
-            return;
-        }
 
         // POST以外のリクエストの場合は、入力画面に遷移
         if (!req.getMethod().equalsIgnoreCase("POST")) {
@@ -44,6 +40,11 @@ public class SubjectUpdateAction extends Action {
         String name = req.getParameter("name");
 
         // バリデーション
+
+        if (subject == null) {
+        	errors.put("cd", "科目が存在していません");
+        }
+
         if (name == null || name.isEmpty()) {
             errors.put("name", "科目名を入力してください");
         } else if (name.length() > 20) {
@@ -52,6 +53,7 @@ public class SubjectUpdateAction extends Action {
 
         // バリデーションエラーがある場合は入力画面に戻す
         if (!errors.isEmpty()) {
+        	req.setAttribute("cd", cd);
             req.setAttribute("name", name);
             req.setAttribute("errors", errors);
             forward(req, res, subject);
@@ -85,12 +87,10 @@ public class SubjectUpdateAction extends Action {
      * @throws Exception
      */
     private void forward(HttpServletRequest req, HttpServletResponse res, Subject subject) throws Exception {
-        req.setAttribute("cd", subject.getCd());
-
-        if (req.getAttribute("name") == null) {
-            req.setAttribute("name", subject.getName());
+        if (subject != null) {
+            req.setAttribute("cd", subject.getCd());
+            req.setAttribute("name", req.getAttribute("name") == null ? subject.getName() : req.getAttribute("name"));
         }
-
         req.getRequestDispatcher("subject_update.jsp").forward(req, res);
     }
 }

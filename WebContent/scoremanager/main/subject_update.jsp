@@ -14,7 +14,11 @@
 					<div class="mb-2">
 						<div class="form-label">科目コード</div>
 						<div class="px-2 py-1">${cd}</div>
+						<div class="my-2 text-warning">
+							${errors.get("cd")}
+						</div>
 					</div>
+
 
 					<div class="mb-2">
 						<label for="student-name" class="form-label">科目名</label>
