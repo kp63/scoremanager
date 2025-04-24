@@ -15,34 +15,31 @@ import bean.School;
 
 public class TestListSubjectDao extends Dao {
 	/**
-	 * 指定した年度、クラス、科目、学校で
-	 * 各学生のテスト（回次→点数）を取得するSQL
+	 * 各学生のテスト（回次→点数）を取得するSQL（年度＋クラス＋科目＋学校で絞り込む）
 	 */
 	private final String basesql =
-		"SELECT st.ent_year      AS ent_year,"
-			+ "       st.no            AS student_no,"
-			+ "       st.name          AS student_name,"
-			+ "       st.class_num     AS class_num,"
-			+ "       t.no             AS test_no,"
-			+ "       t.point          AS point "
-			+ "  FROM test t "
-			+ "  JOIN student st "
-			+ "    ON t.student_no = st.no "
-			+ "   AND t.school_cd   = st.school_cd "
-			+ " WHERE st.ent_year   = ? "
-			+ "   AND st.class_num  = ? "
-			+ "   AND t.subject_cd  = ? "
-			+ "   AND t.school_cd   = ? "
-			+ " ORDER BY st.no, t.no";
+			"SELECT st.ent_year      AS ent_year,"
+					+ "       st.no            AS student_no,"
+					+ "       st.name          AS student_name,"
+					+ "       st.class_num     AS class_num,"
+					+ "       t.no             AS test_no,"
+					+ "       t.point          AS point "
+					+ "  FROM test t "
+					+ "  JOIN student st "
+					+ "    ON t.student_no = st.no "
+					+ "   AND t.school_cd   = st.school_cd "
+					+ " WHERE st.ent_year   = ? "
+					+ "   AND st.class_num  = ? "
+					+ "   AND t.subject_cd  = ? "
+					+ "   AND t.school_cd   = ? "
+					+ " ORDER BY st.no, t.no";
 
 	/**
 	 * ResultSet を TestListSubject Bean のリストに変換。
-	 * // グルーピング：同一 student_no は一つの Bean にまとめ、
-	 * // Bean#points に (test_no → point) を格納する。
+	 * 同一 student_no は一つの Bean にまとめ、points に格納する。
 	 */
 	public List<TestListSubject> postFilter(ResultSet rs) throws SQLException {
 		List<TestListSubject> out = new ArrayList<>();
-		// 学生No.ごとに Bean を保持する Map
 		Map<String, TestListSubject> map = new HashMap<>();
 
 		while (rs.next()) {
@@ -63,7 +60,6 @@ public class TestListSubjectDao extends Dao {
 				bean.setPoints(new HashMap<>());
 				map.put(stuNo, bean);
 			}
-			// 回次→点数
 			bean.getPoints().put(testNo, pt);
 		}
 
@@ -72,11 +68,25 @@ public class TestListSubjectDao extends Dao {
 	}
 
 	/**
+	 * 学校に紐づく入学年度の一覧を取得（重複除去、昇順）
+	 */
+	public List<Integer> findDistinctEntYears(School school) throws Exception {
+		String sql = "SELECT DISTINCT ent_year FROM student WHERE school_cd = ? ORDER BY ent_year";
+		try (Connection con = getConnection();
+			 PreparedStatement stmt = con.prepareStatement(sql)) {
+			stmt.setString(1, school.getCd());
+			try (ResultSet rs = stmt.executeQuery()) {
+				List<Integer> list = new ArrayList<>();
+				while (rs.next()) {
+					list.add(rs.getInt("ent_year"));
+				}
+				return list;
+			}
+		}
+	}
+
+	/**
 	 * 指定した条件で TestListSubject の一覧を取得
-	 * @param entYear   入学年度
-	 * @param classNum  クラス番号
-	 * @param subject   科目 Bean（cd, school_cd が設定済み）
-	 * @param school    School Bean
 	 */
 	public List<TestListSubject> filter(int entYear,
 										String classNum,
@@ -84,12 +94,10 @@ public class TestListSubjectDao extends Dao {
 										School school) throws Exception {
 		try (Connection con = getConnection();
 			 PreparedStatement stmt = con.prepareStatement(basesql)) {
-
-			stmt.setInt   (1, entYear);
+			stmt.setInt(1, entYear);
 			stmt.setString(2, classNum);
 			stmt.setString(3, subject.getCd());
 			stmt.setString(4, school.getCd());
-
 			try (ResultSet rs = stmt.executeQuery()) {
 				return postFilter(rs);
 			}
