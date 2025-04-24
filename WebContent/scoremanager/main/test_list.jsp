@@ -106,20 +106,15 @@
 								<td><c:out value="${item.studentNo}" /></td>
 								<td><c:out value="${item.studentName}" /></td>
 								<td>
-									<c:choose>
-										<c:when test="${item.points[1] != null}">
-											<c:out value="${item.points[1]}" />
-										</c:when>
-										<c:otherwise>―</c:otherwise>
-									</c:choose>
+									<%
+										bean.TestListSubject cur = (bean.TestListSubject)pageContext.getAttribute("item");
+										Integer p1 = cur.getPoints().get(1);
+									%>
+									<%= (p1 != null ? p1 : "―") %>
 								</td>
 								<td>
-									<c:choose>
-										<c:when test="${item.points[2] != null}">
-											<c:out value="${item.points[2]}" />
-										</c:when>
-										<c:otherwise>―</c:otherwise>
-									</c:choose>
+									<% Integer p2 = cur.getPoints().get(2); %>
+									<%= (p2 != null ? p2 : "―") %>
 								</td>
 							</tr>
 						</c:forEach>
