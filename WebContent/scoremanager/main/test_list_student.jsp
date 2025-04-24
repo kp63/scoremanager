@@ -1,0 +1,51 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+
+<!-- 生徒別検索フォーム＆結果（test_list.jsp からインクルードされるフラグメント） -->
+<div class="mb-5">
+	<h3 class="h5 mb-3">生徒別検索</h3>
+	<form action="TestListStudentExecute.action" method="get" class="row gx-2 gy-2 align-items-end">
+		<div class="col-auto">
+			<label for="studentNo" class="form-label">学生番号</label>
+			<input id="studentNo" type="text" name="studentNo" class="form-control" value="${param.studentNo}" />
+		</div>
+		<div class="col-auto">
+			<button type="submit" class="btn btn-secondary">検索</button>
+		</div>
+	</form>
+	<c:if test="${studentNotFound}">
+		<div class="text-danger mt-2">指定された学生が見つかりません。</div>
+	</c:if>
+</div>
+
+<c:if test="${not empty studentResults}">
+	<h3 class="h5 mb-2">生徒別検索結果</h3>
+	<p class="mb-3">
+		氏名：<c:out value="${searchStudent.name}" /> (<c:out value="${searchStudent.no}" />)
+	</p>
+	<div class="table-responsive">
+		<table class="table table-hover">
+			<thead>
+			<tr>
+				<th>科目名</th>
+				<th>科目コード</th>
+				<th>回数</th>
+				<th>点数</th>
+			</tr>
+			</thead>
+			<tbody>
+			<c:forEach var="item" items="${studentResults}">
+				<tr>
+					<td><c:out value="${item.subjectName}" /></td>
+					<td><c:out value="${item.subjectCd}" /></td>
+					<td><c:out value="${item.num}" /></td>
+					<td><c:out value="${item.point}" /></td>
+				</tr>
+			</c:forEach>
+			</tbody>
+		</table>
+	</div>
+</c:if>
+<c:if test="${studentResultsNotFound}">
+	<div class="text-warning">成績情報が存在しませんでした</div>
+</c:if>
