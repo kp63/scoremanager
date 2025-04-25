@@ -10,15 +10,22 @@
 			  class="row gx-2 gy-2 align-items-end">
 			<div class="col-auto">
 				<label for="studentNo" class="form-label">学生番号</label>
-				<input id="studentNo" type="text" name="studentNo"
-					   class="form-control" value="${param.studentNo}" />
+				<!-- required 属性＋カスタムメッセージで未入力時に止める -->
+				<input id="studentNo"
+					   type="text"
+					   name="studentNo"
+					   class="form-control"
+					   value="${param.studentNo}"
+					   required
+					   oninvalid="this.setCustomValidity('このフィールドを入力してください')"
+					   oninput="this.setCustomValidity('')" />
 			</div>
 			<div class="col-auto">
 				<button type="submit" class="btn btn-secondary">検索</button>
 			</div>
 		</form>
 		<c:if test="${studentNotFound}">
-			<div class="text-danger mt-2">指定された学生が見つかりません。</div>
+			<div class="text-danger mt-2">成績情報が存在しませんでした</div>
 		</c:if>
 	</div>
 </c:if>
@@ -54,6 +61,6 @@
 		</div>
 	</c:if>
 	<c:if test="${studentResultsNotFound}">
-		<div class="text-warning mb-5">成績情報が存在しませんでした</div>
+		<div class="text-warning mb-5">指定した学生情報が見つかりません</div>
 	</c:if>
 </c:if>

@@ -93,6 +93,6 @@
 		</div>
 	</c:if>
 	<c:if test="${subjectNotFound}">
-		<div class="text-warning mb-5">科目別データが存在しませんでした</div>
+		<div class="text-warning mb-5">学生情報が存在しませんでした</div>
 	</c:if>
 </c:if>
