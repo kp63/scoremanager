@@ -5,7 +5,7 @@
 
 <c:if test="${mode == 'form'}">
 	<div class="mb-3">
-		<h3 class="h5 mb-3">生徒別検索</h3>
+		<h3 class="h5 mb-3">学生別検索</h3>
 		<form action="TestListStudentExecute.action" method="get"
 			  class="row gx-2 gy-2 align-items-end">
 			<div class="col-auto">
