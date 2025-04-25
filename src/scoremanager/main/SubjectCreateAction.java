@@ -21,7 +21,7 @@ public class SubjectCreateAction extends Action {
 		HttpSession session = req.getSession();
 		Teacher teacher = (Teacher) session.getAttribute("user");
 
-		// POST時以外は、そのまま学生登録画面を表示
+		// POST時以外は、そのまま科目登録画面を表示
 		if (!req.getMethod().equals("POST")) {
 			forward(req, res, teacher.getSchool());
 			return;
@@ -66,6 +66,7 @@ public class SubjectCreateAction extends Action {
 		subject.setSchool(teacher.getSchool());
 
 		if (sDao.save(subject)) {
+			// 科目追加して成功ページに飛ぶ
 			req.setAttribute("title", "科目情報登録");
 			req.setAttribute("message", "登録が完了しました");
 
