@@ -68,4 +68,38 @@ public class ClassNumDao extends Dao {
 		return items;
 	}
 
+	public boolean save(ClassNum class_num) throws Exception {
+		try (Connection con = this.getConnection()) {
+			// 実在チェック
+			if (this.get(class_num.getClass_num(), class_num.getSchool()) == null) {
+				// 新規登録
+				String sql = "insert into class_num (school_cd, class_num) values (?, ?)";
+				try (PreparedStatement stmt = con.prepareStatement(sql)) {
+					stmt.setString(1, class_num.getSchool().getCd());
+					stmt.setString(2, class_num.getClass_num());
+
+					return stmt.executeUpdate() > 0;
+				}
+
+			} else {
+				return false;
+			}
+		}
+	}
+
+	public boolean delete(ClassNum class_num) throws Exception {
+		String sql = "DELETE FROM class_num WHERE class_num = ? AND school_cd = ?";
+
+		try (
+			Connection con = this.getConnection();
+			PreparedStatement stmt = con.prepareStatement(sql)
+		) {
+			stmt.setString(1, class_num.getClass_num());
+			stmt.setString(2, class_num.getSchool().getCd());
+
+			return stmt.executeUpdate() > 0;
+		}
+
+	}
+
 }
