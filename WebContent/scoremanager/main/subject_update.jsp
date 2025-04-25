@@ -12,7 +12,7 @@
 			<form action="SubjectUpdate.action?no=${cd}" method="POST" class="px-2">
 				<div>
 					<div class="mb-2">
-						<div class="form-label">科目コード</div>
+						<label for="student-name" class="form-label">科目コード</label>>
 						<div class="px-2 py-1">${cd}</div>
 						<div class="my-2 text-warning">
 							${errors.get("cd")}
@@ -25,10 +25,11 @@
 						<input
 							type="text"
 							class="form-control"
-							id="student-name"
+							id="subject-name"
 							name="name"
 							value="${name}"
 							placeholder="科目名を入力してください"
+							maxlength="20"
 							required
 						>
 					</div>

@@ -11,7 +11,7 @@
 			<h2 class="h3 mb-3 fw-normal bg-secondary bg-opacity-10 py-2 px-4">科目情報削除</h2>
 			<form action="SubjectDelete.action?no=${no}" method="POST" class="px-2">
 				<div>
-					<p>「<strong>${name}</strong>」を削除してもよろしいですか</p>
+					<p>「<strong>${subject_name}</strong>」を削除してもよろしいですか</p>
 				</div>
 				<button type="submit" class="btn btn-primary">削除</button>
 			</form>

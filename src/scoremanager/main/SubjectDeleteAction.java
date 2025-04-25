@@ -54,8 +54,8 @@ public class SubjectDeleteAction extends Action {
     private void forward(HttpServletRequest req, HttpServletResponse res, Subject subject) throws Exception {
         req.setAttribute("no", subject.getCd());
 
-        if (req.getAttribute("name") == null) {
-            req.setAttribute("name", subject.getName());
+        if (req.getAttribute("subject_name") == null) {
+            req.setAttribute("subject_name", subject.getName());
         }
 
         req.getRequestDispatcher("subject_delete.jsp").forward(req, res);
