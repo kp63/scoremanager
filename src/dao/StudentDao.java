@@ -62,11 +62,9 @@ public class StudentDao extends Dao {
 
 		// 条件をWHEREで絞り込み
 		// SQLインジェクション対策の為、SQL文とパラメータを分けて定義
-		sql.append(" where 1 = 1");
-		if (school != null) {
-			sql.append(" and school_cd = ?");
-			params.add(school.getCd());
-		}
+		sql.append(" where school_cd = ?");
+		params.add(school.getCd());
+
 		if (entYear != 0) {
 			sql.append(" and ent_year = ?");
 			params.add(entYear);
@@ -96,11 +94,8 @@ public class StudentDao extends Dao {
 
 		// 条件をWHEREで絞り込み
 		// SQLインジェクション対策の為、SQL文とパラメータを分けて定義
-		sql.append(" where 1 = 1");
-		if (school != null) {
-			sql.append(" and school_cd = ?");
-			params.add(school.getCd());
-		}
+		sql.append(" where school_cd = ?");
+		params.add(school.getCd());
 		if (entYear != 0) {
 			sql.append(" and ent_year = ?");
 			params.add(entYear);
@@ -126,7 +121,8 @@ public class StudentDao extends Dao {
 
 		// 条件をWHEREで絞り込み
 		// SQLインジェクション対策の為、SQL文とパラメータを分けて定義
-		sql.append(" where 1 = 1");
+		sql.append(" where school_cd = ?");
+		params.add(school.getCd());
 		if (isAttend) {
 			sql.append(" and is_attend = ?");
 			params.add(isAttend);
