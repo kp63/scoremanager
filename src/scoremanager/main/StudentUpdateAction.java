@@ -97,7 +97,6 @@ public class StudentUpdateAction extends Action {
 			req.setAttribute("message", "変更が成功しました");
 
 			LinkedHashMap<String, String> links = new LinkedHashMap<>();
-			links.put("戻る", "StudentUpdate.action?no=" + student.getNo());
 			links.put("学生一覧", "StudentList.action");
 			req.setAttribute("links", links);
 
