@@ -136,32 +136,32 @@ public class TestRegistAction extends Action {
 		HashMap<String, String> errors = new HashMap<String, String>();
 
 		// フォームが全部NULLまたは全部埋まってるときはエラーを出さない
-		Stream<String> formValuesCheck = Arrays.asList(f_entYearStr, f_classNum, f_subjectCd, f_countStr).stream();
-		if (formValuesCheck.allMatch(s -> s == null || s.equals(""))) {
+		List<String> formValues = Arrays.asList(f_entYearStr, f_classNum, f_subjectCd, f_countStr);
+		if (formValues.stream().allMatch(s -> s == null || s.equals(""))) {
 			errors.put("all", "");
 			req.setAttribute("is_firstview", true);
 			return errors;
 		}
 
+		if (formValues.stream().anyMatch(s -> s == null || s.equals(""))) {
+			errors.put("f_error", "入学年度とクラスと科目と回数を選択してください");
+		}
+
 		// 年度のチェック
-		if (f_entYearStr == null || f_entYearStr.equals("")) {
-			errors.put("f1", "年度を選択してください。");
-		} else {
+		if (f_entYearStr != null && !f_entYearStr.equals("")) {
 			try {
 				int entYear = Integer.parseInt(f_entYearStr);
 				if (entYear < 2000 || entYear > LocalDate.now().getYear()) {
-					errors.put("f1", "年度は2000年から" + LocalDate.now().getYear() + "年までの数字で指定してください。");
+					errors.put("f1", "入学年度は2000年から" + LocalDate.now().getYear() + "年までの数字で指定してください。");
 				}
 			} catch (NumberFormatException e) {
-				errors.put("f1", "年度は数字で指定してください。");
+				errors.put("f1", "入学年度は数字で指定してください。");
 			}
 		}
 
 		// クラスのチェック
 		ClassNumDao cNumDao = new ClassNumDao();
-		if (f_classNum == null || f_classNum.equals("")) {
-			errors.put("f2", "クラスを選択してください。");
-		} else {
+		if (f_classNum != null && !f_classNum.equals("")) {
 			try {
 				if (cNumDao.get(f_classNum, school) == null) {
 					errors.put("f2", "クラスが存在しません。");
@@ -173,9 +173,7 @@ public class TestRegistAction extends Action {
 
 		// 科目のチェック
 		SubjectDao subjectDao = new SubjectDao();
-		if (f_subjectCd == null || f_subjectCd.equals("")) {
-			errors.put("f3", "科目を選択してください。");
-		} else {
+		if (f_subjectCd != null && !f_subjectCd.equals("")) {
 			try {
 				Subject subject = subjectDao.get(f_subjectCd, school);
 				if (subject == null) {
@@ -188,9 +186,7 @@ public class TestRegistAction extends Action {
 		}
 
 		// 回数のチェック
-		if (f_countStr == null || f_countStr.equals("")) {
-			errors.put("f4", "回数を選択してください。");
-		} else {
+		if (f_countStr != null && !f_countStr.equals("")) {
 			try {
 				int count = Integer.parseInt(f_countStr);
 				if (count < 1 || count > 100) {
