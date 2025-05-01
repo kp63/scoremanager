@@ -17,6 +17,7 @@
 					   type="text"
 					   name="studentNo"
 					   class="form-control"
+					   placeholder="学生番号を入力してください"
 					   value="${param.studentNo}"
 					   required
 					   oninvalid="this.setCustomValidity('このフィールドを入力してください')"
