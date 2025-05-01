@@ -10,24 +10,25 @@
 				成績参照
 			</h2>
 
-			<!-- 検索フォームを縦並び -->
-			<div class="mb-4">
+			<!-- 科目情報フォームと学生情報フォームを1つの枠で囲み、間に横線 -->
+			<div class="border rounded p-3 mb-4">
 				<jsp:include page="test_list_subject.jsp">
 					<jsp:param name="includeMode" value="form" />
 				</jsp:include>
-			</div>
-			<div class="mb-4">
+
+				<hr class="my-4" />
+
 				<jsp:include page="test_list_student.jsp">
 					<jsp:param name="includeMode" value="form" />
 				</jsp:include>
 			</div>
 
-			<!-- 科目別検索結果 -->
+			<!-- 科目別検索結果（枠なし） -->
 			<jsp:include page="test_list_subject.jsp">
 				<jsp:param name="includeMode" value="result" />
 			</jsp:include>
 
-			<!-- 生徒別検索結果 -->
+			<!-- 生徒別検索結果（枠なし） -->
 			<jsp:include page="test_list_student.jsp">
 				<jsp:param name="includeMode" value="result" />
 			</jsp:include>

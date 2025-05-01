@@ -5,12 +5,14 @@
 
 <c:if test="${mode == 'form'}">
 	<div class="mb-3">
-		<h3 class="h5 mb-3">学生別検索</h3>
 		<form action="TestListStudentExecute.action" method="get"
-			  class="row gx-2 gy-2 align-items-end">
+			  class="row gx-2 gy-2 align-items-center mt-3">
+			<!-- 見出しを行の中央（縦方向）に配置 -->
+			<div class="col-auto me-4">
+				<h6 class="h5 mb-0 fw-normal">学生情報</h6>
+			</div>
 			<div class="col-auto">
 				<label for="studentNo" class="form-label">学生番号</label>
-				<!-- required 属性＋カスタムメッセージで未入力時に止める -->
 				<input id="studentNo"
 					   type="text"
 					   name="studentNo"
@@ -33,7 +35,7 @@
 <c:if test="${mode == 'result'}">
 	<c:if test="${not empty studentResults}">
 		<div class="mb-5">
-			<h3 class="h5 mb-2">生徒別検索結果</h3>
+			<h3 class="h5 mb-2 fw-normal">生徒別検索結果</h3>
 			<p class="mb-3">
 				氏名：<c:out value="${searchStudent.name}" />　
 				(<c:out value="${searchStudent.no}" />)

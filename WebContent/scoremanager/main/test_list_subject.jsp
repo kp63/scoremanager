@@ -6,9 +6,12 @@
 
 <c:if test="${mode == 'form'}">
 	<div class="mb-3">
-		<h3 class="h5 mb-3">科目別検索</h3>
 		<form action="TestListSubjectExecute.action" method="get"
-			  class="row gx-2 gy-2 align-items-end">
+			  class="row gx-2 gy-2 align-items-center mt-3">
+			<!-- 見出しを横並びにして中央揃え、通常ウェイトに -->
+			<div class="col-auto me-4">
+				<h6 class="h5 mb-0 fw-normal">科目情報</h6>
+			</div>
 			<div class="col-auto">
 				<label for="entYear" class="form-label">入学年度</label>
 				<select id="entYear" name="entYear" class="form-select">
@@ -55,15 +58,22 @@
 <c:if test="${mode == 'result'}">
 	<c:if test="${not empty subjectResults}">
 		<div class="mb-5">
-			<h3 class="h5 mb-2">科目別検索結果: ${fn:length(subjectResults)} 件</h3>
-			<p class="mb-3">科目：<c:out value="${searchSubject.name}" /></p>
+			<h3 class="h5 mb-2 fw-normal">
+				科目別検索結果: ${fn:length(subjectResults)} 件
+			</h3>
+			<p class="mb-3">
+				科目：<c:out value="${searchSubject.name}" />
+			</p>
 			<div class="table-responsive">
 				<table class="table table-hover">
 					<thead>
 					<tr>
-						<th>入学年度</th><th>クラス</th>
-						<th>学生番号</th><th>氏名</th>
-						<th>1回</th><th>2回</th>
+						<th>入学年度</th>
+						<th>クラス</th>
+						<th>学生番号</th>
+						<th>氏名</th>
+						<th>1回</th>
+						<th>2回</th>
 					</tr>
 					</thead>
 					<tbody>
@@ -74,15 +84,19 @@
 							<td><c:out value="${item.studentNo}" /></td>
 							<td><c:out value="${item.studentName}" /></td>
 							<td>
-								<% bean.TestListSubject cur =
-									(bean.TestListSubject)pageContext.getAttribute("item");
-									Integer p1 = cur.getPoints().get(1); %>
+								<%
+									bean.TestListSubject cur =
+										(bean.TestListSubject) pageContext.getAttribute("item");
+									Integer p1 = cur.getPoints().get(1);
+								%>
 								<%= (p1 != null ? p1 : "―") %>
 							</td>
 							<td>
-								<% Integer p2 =
-									((bean.TestListSubject)pageContext.getAttribute("item"))
-										.getPoints().get(2); %>
+								<%
+									Integer p2 =
+										((bean.TestListSubject)pageContext.getAttribute("item"))
+											.getPoints().get(2);
+								%>
 								<%= (p2 != null ? p2 : "―") %>
 							</td>
 						</tr>
