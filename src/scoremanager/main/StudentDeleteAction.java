@@ -39,6 +39,12 @@ public class StudentDeleteAction extends Action {
 			return;
 		}
 
+		// リクエストがPOSTメソッドではない場合、確認画面を表示
+		if (!req.getMethod().equals("POST")) {
+			forward(req, res, student);
+			return;
+		}
+
 		// 削除
 		if (sDao.delete(student.getNo())) {
 			req.setAttribute("title", "学生削除");
@@ -54,4 +60,12 @@ public class StudentDeleteAction extends Action {
 		}
 	}
 
+	/**
+	 * 削除確認画面を表示
+	 */
+	private void forward(HttpServletRequest req, HttpServletResponse res, Student student) throws Exception {
+		req.setAttribute("no", student.getNo());
+		req.setAttribute("name", student.getName());
+		req.getRequestDispatcher("student_delete.jsp").forward(req, res);
+	}
 }
