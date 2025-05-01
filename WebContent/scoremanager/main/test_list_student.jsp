@@ -28,7 +28,7 @@
 			</div>
 		</form>
 		<c:if test="${studentNotFound}">
-			<div class="text-danger mt-2">成績情報が存在しませんでした</div>
+			<div class="text-danger mt-2">指定した学生情報が見つかりません</div>
 		</c:if>
 	</div>
 </c:if>
@@ -64,6 +64,6 @@
 		</div>
 	</c:if>
 	<c:if test="${studentResultsNotFound}">
-		<div class="text-warning mb-5">指定した学生情報が見つかりません</div>
+		<div class="text-warning mb-5">成績情報が存在しませんでした</div>
 	</c:if>
 </c:if>
