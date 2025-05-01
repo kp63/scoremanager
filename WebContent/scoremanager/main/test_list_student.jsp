@@ -64,6 +64,7 @@
 		</div>
 	</c:if>
 	<c:if test="${studentResultsNotFound}">
+		<p class="mb-3">氏名：<c:out value="${searchStudent.name}" />(<c:out value="${searchStudent.no}" />)</p>
 		<div class="text-warning mb-5">成績情報が存在しませんでした</div>
 	</c:if>
 </c:if>
