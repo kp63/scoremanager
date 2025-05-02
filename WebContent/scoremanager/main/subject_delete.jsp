@@ -13,11 +13,12 @@
 				<div>
 					<p>「<strong>${subject_name}</strong>」を削除してもよろしいですか</p>
 				</div>
-				<button type="submit" class="btn btn-primary">削除</button>
+				<button type="submit" class="btn btn-danger">削除</button>
 			</form>
-			<div>
+			<div class="mt-5">
 				<a href="SubjectList.action" class="btn btn-link">戻る</a>
 			</div>
+
 		</section>
 	</c:param>
 </c:import>
