@@ -7,6 +7,10 @@ public class Teacher extends User implements Serializable {
 	private String password;
 	private String name;
 	private School school;
+	/**
+	 * 教員のロール
+	 * default: 教員, admin: 管理者
+	 */
 	private String role;
 
 	public String getId() {
@@ -21,6 +25,13 @@ public class Teacher extends User implements Serializable {
 	public School getSchool() {
 		return this.school;
 	}
+
+	/**
+	 * 教員のロールを取得する
+	 * 戻り値は("default" | "admin" | null)
+	 * @return 教員のロール
+	 * (default: 一般教員, admin: 管理者教員)
+	 */
 	public String getRole() {
 		return this.role;
 	}
@@ -37,6 +48,12 @@ public class Teacher extends User implements Serializable {
 	public void setSchool(School school) {
 		this.school = school;
 	}
+
+	/**
+	 * 教員のロールを設定する
+	 * @param role 教員のロール
+	 * (default: 一般教員, admin: 管理者教員)
+	 */
 	public void setRole(String role) {
 		this.role = role;
 	}
