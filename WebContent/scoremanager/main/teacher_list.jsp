@@ -32,7 +32,7 @@
 									<td>${teacher.id}</td>
 									<td>${teacher.name}</td>
 									<td><a href="TeacherUpdate.action?school_cd=${school_cd}&teacher_id=${teacher.id}">更新</a></td>
-									<td><a href="TeacherDelete.action?school_cd=${school_cd}&teacher_id=${teacher.id}">削除</a></td>
+									<td><a href="TeacherDelete.action?teacher_id=${teacher.id}">削除</a></td>
 								</tr>
 							</c:forEach>
 						</tbody>
