@@ -25,7 +25,7 @@ public class TeacherListAction extends Action {
 		HttpSession session = req.getSession();
 		Teacher teacher = (Teacher) session.getAttribute("user");
 
-		if (teacher == null || !"admin".equals(teacher.getId())) {
+		if (teacher == null || !"admin".equals(teacher.getRole())) {
 			req.getRequestDispatcher("/error.jsp").forward(req, res);
 			return;
 		}
