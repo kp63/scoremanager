@@ -68,6 +68,22 @@ public class TeacherDao extends Dao {
 	}
 
 	/**
+	 * 教員IDを指定して教員を削除
+	 * @param id
+	 * @return
+	 * @throws Exception
+	 */
+	public boolean delete(String id) throws Exception {
+		try (Connection con = this.getConnection()) {
+			// 教員IDを指定してDELETE
+			try (PreparedStatement stmt = con.prepareStatement("delete from teacher where id = ?")) {
+				stmt.setString(1, id);
+				return stmt.executeUpdate() > 0;
+			}
+		}
+	}
+
+	/**
 	 * 教員IDとパスワードで認証を行う
 	 * @param id
 	 * @param password
