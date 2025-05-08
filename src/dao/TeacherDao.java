@@ -8,7 +8,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import bean.School;
-import bean.Student;
 import bean.Teacher;
 
 public class TeacherDao extends Dao {
@@ -67,6 +66,59 @@ public class TeacherDao extends Dao {
 		return this.executeQuery(sql, params);
 	}
 
+	/**
+	 * 教員情報を保存する
+	 * 教員IDが存在しない場合はINSERT、存在する場合はUPDATEを実行
+	 * @param teacher 教員情報
+	 * @return 教員情報の保存に成功した場合はtrue、失敗した場合はfalse
+	 * @throws Exception
+	 */
+	public boolean save(Teacher teacher) throws Exception {
+		Teacher existingTeacher = this.get(teacher.getId());
+
+		// 教員IDが存在しない場合はINSERT、存在する場合はUPDATEを実行
+		if (existingTeacher == null) {
+			// INSERT処理
+			try (Connection con = this.getConnection()) {
+				try (PreparedStatement stmt = con.prepareStatement("insert into teacher(id, password, name, school_cd) values(?, ?, ?, ?)")) {
+					stmt.setString(1, teacher.getId());
+					stmt.setString(2, teacher.getPassword());
+					stmt.setString(3, teacher.getName());
+					stmt.setString(4, teacher.getSchool().getCd());
+
+					return stmt.executeUpdate() > 0;
+				}
+			}
+		} else {
+			// UPDATE処理
+			try (Connection con = this.getConnection()) {
+				try (PreparedStatement stmt = con.prepareStatement("update teacher set password = ?, name = ?, school_cd = ? where id = ?")) {
+					stmt.setString(1, teacher.getPassword());
+					stmt.setString(2, teacher.getName());
+					stmt.setString(3, teacher.getSchool().getCd());
+					stmt.setString(4, teacher.getId());
+
+					return stmt.executeUpdate() > 0;
+				}
+			}
+		}
+	}
+
+	/**
+	 * 教員IDを指定して教員を削除
+	 * @param id
+	 * @return
+	 * @throws Exception
+	 */
+	public boolean delete(String id) throws Exception {
+		try (Connection con = this.getConnection()) {
+			// 教員IDを指定してDELETE
+			try (PreparedStatement stmt = con.prepareStatement("delete from teacher where id = ?")) {
+				stmt.setString(1, id);
+				return stmt.executeUpdate() > 0;
+			}
+		}
+	}
 	/**
 	 * 教員IDとパスワードで認証を行う
 	 * @param id
