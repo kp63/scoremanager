@@ -34,6 +34,12 @@ public class TeacherDao extends Dao {
 				teacher.setPassword(rs.getString("password"));
 				teacher.setName(rs.getString("name"));
 				teacher.setSchool(schoolDao.get(rs.getString("school_cd")));
+				teacher.setRole("default");
+
+				// ユーザーIDがadminの場合は管理者権限として扱う
+				if (teacher.getId().equals("admin")) {
+					teacher.setRole("admin");
+				}
 
 				return teacher;
 			}
