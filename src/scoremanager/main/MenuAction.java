@@ -13,6 +13,8 @@ public class MenuAction extends Action {
 		HttpSession session = req.getSession();
 		Teacher teacher = (Teacher) session.getAttribute("user");
 		if ("admin".equals(teacher.getRole())) {
+		    session.setAttribute("showSuperExtraData", true);
+		}else if ("".equals(teacher.getRole())) {
 		    session.setAttribute("showExtraData", true);
 		}
 		req.getRequestDispatcher("menu.jsp").forward(req, res);

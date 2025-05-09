@@ -13,6 +13,7 @@
 			<%-- セクションヘッダー - メニュータイトルを表示 --%>
 			<h2 class="h3 mb-3 fw-normal bg-secondary bg-opacity-10 py-2 px-4">メニュー</h2>
 			<%-- メニューグリッド - 4つの主要機能を2x2のグリッドレイアウトで表示 --%>
+			<c:if test="${not sessionScope.showSuperExtraData}">
 			<div class="row text-center px-4 fs-3 my-5">
 				<%-- 学生管理メニュー - 学生情報の登録・編集・削除機能へのリンク --%>
 				<div class="col d-flex align-items-center justify-content-center mx-2 rounded shadow" style="height: 10rem; background-color: #dbb;">
@@ -44,11 +45,18 @@
 					<a href="ClassList.action">クラス管理</a>
 				</div>
 			</div>
+			</c:if>
 			<div class="row text-center px-4 fs-3 my-5">
-				<c:if test="${sessionScope.showExtraData}">
+				<c:if test="${sessionScope.showExtraData or sessionScope.showSuperExtraData}">
 					<div class="col d-flex align-items-center justify-content-center mx-2 rounded shadow"
 					style="height: 10rem; background-color: #bdd;">
 						<a href="TeacherList.action">教員管理</a>
+					</div>
+				</c:if>
+				<c:if test="${sessionScope.showSuperExtraData}">
+					<div class="col d-flex align-items-center justify-content-center mx-2 rounded shadow"
+					style="height: 10rem; background-color: #e6b5ec;">
+						<a href="TeacherList.action">学校管理</a>
 					</div>
 				</c:if>
 			</div>
