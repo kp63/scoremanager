@@ -5,7 +5,7 @@
 	<c:param name="title" value="エラーページ" />
 
 	<c:param name="content">
-		<p>
+		<p class="alert alert-danger">
 			${errorMessage != null ? errorMessage : "エラーが発生しました"}
 		</p>
 	</c:param>

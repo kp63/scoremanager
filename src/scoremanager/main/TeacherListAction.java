@@ -9,6 +9,8 @@ import javax.servlet.http.HttpSession;
 import bean.Teacher;
 import dao.TeacherDao;
 import tool.Action;
+import tool.Auth;
+import tool.ServletUtil;
 
 /**
  * 処理を実行するアクションクラス
@@ -22,11 +24,9 @@ public class TeacherListAction extends Action {
 	@Override
 	public void execute(HttpServletRequest req, HttpServletResponse res) throws Exception {
 		// セッションから先生の情報を取得
-		HttpSession session = req.getSession();
-		Teacher teacher = (Teacher) session.getAttribute("user");
-
-		if (teacher == null || !"admin".equals(teacher.getRole())) {
-			req.getRequestDispatcher("/error.jsp").forward(req, res);
+		Teacher teacher = Auth.getTeacher();
+		if (teacher == null || !Auth.isAdminTeacher()) {
+			ServletUtil.throwError(req, res, "権限がありません");
 			return;
 		}
 

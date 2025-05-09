@@ -5,6 +5,7 @@ import java.io.Serializable;
 public class Superuser extends User implements Serializable {
 	private String id;
 	private String password;
+	private String name;
 
 
 	public String getId() {
@@ -21,4 +22,15 @@ public class Superuser extends User implements Serializable {
 		this.password = password;
 	}
 
+	public String getName() {
+		if (this.name == null) {
+			return this.getId();
+		}
+
+		return this.name;
+	}
+
+	public void setName(String name) {
+		this.setId(name);
+	}
 }

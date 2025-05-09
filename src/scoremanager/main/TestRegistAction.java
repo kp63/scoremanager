@@ -18,6 +18,8 @@ import dao.ClassNumDao;
 import dao.SubjectDao;
 import dao.TestDao;
 import tool.Action;
+import tool.Auth;
+import tool.ServletUtil;
 
 public class TestRegistAction extends Action {
 	@Override
@@ -26,10 +28,9 @@ public class TestRegistAction extends Action {
 	}
 
 	public static void forward(HttpServletRequest req, HttpServletResponse res) throws Exception {
-		HttpSession session = req.getSession();
-		Teacher teacher = (Teacher) session.getAttribute("user");
+		Teacher teacher = Auth.getTeacher();
 		if (teacher == null) {
-			res.sendRedirect(req.getContextPath() + "/login.jsp");
+			ServletUtil.throwError(req, res, "権限がありません");
 			return;
 		}
 
