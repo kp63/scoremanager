@@ -64,4 +64,29 @@ public class SchoolDao extends Dao {
 		return items;
 	}
 
+	public boolean save(School school) throws Exception {
+		try (Connection con = this.getConnection()) {
+			// 実在チェック
+			if (this.get(school.getCd()) == null) {
+				// 新規登録
+				String sql = "insert into school (cd, name) values (?, ?)";
+				try (PreparedStatement stmt = con.prepareStatement(sql)) {
+					stmt.setString(1, school.getCd());
+					stmt.setString(2, school.getName());
+
+					return stmt.executeUpdate() > 0;
+				}
+			} else {
+				// 更新
+				String sql = "update school set name = ? where cd = ?";
+				try (PreparedStatement stmt = con.prepareStatement(sql)) {
+					stmt.setString(1, school.getName());
+					stmt.setString(2, school.getCd());
+
+					return stmt.executeUpdate() > 0;
+				}
+			}
+		}
+	}
+
 }
