@@ -30,7 +30,7 @@
 					</div>
 
 					<div class="my-2 text-warning">
-						${errors.get("Teacher_id")}
+						${errors.get("id")}
 					</div>
 
 					<div class="mb-2">
@@ -46,7 +46,7 @@
 					</div>
 
 					<div class="my-2 text-warning">
-						${errors.get("Teacher_password")}
+						${errors.get("password")}
 					</div>
 
 					<div class="mb-2">
@@ -63,7 +63,7 @@
 
 
 					<div class="my-2 text-warning">
-						${errors.get("Teacher_name")}
+						${errors.get("name")}
 					</div>
 
 				</div>

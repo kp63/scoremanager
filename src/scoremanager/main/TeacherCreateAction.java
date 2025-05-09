@@ -55,6 +55,9 @@ public class TeacherCreateAction extends Action {
         // バリデーションエラーがある場合は入力画面に戻す
         if (errors.size() > 0) {
             req.setAttribute("errors", errors);
+            req.setAttribute("id", id);
+            req.setAttribute("password", password);
+            req.setAttribute("name",name);
             forward(req, res, teacher.getSchool());
             return;
         }
