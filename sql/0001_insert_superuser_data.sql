@@ -1,0 +1,1 @@
+INSERT INTO SUPERUSER(ID, PASSWORD) VALUES ('root', 'password');
