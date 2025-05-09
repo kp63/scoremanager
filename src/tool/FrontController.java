@@ -24,11 +24,12 @@ public class FrontController extends HttpServlet {
 			// 例: scoremanager/Login.action → scoremanager.LoginAction
 			String name = path.replace(".action", "Action").replace('/', '.');
 
+			Auth._setRequest(req);
+
 			// scoremanager.main配下は認証が必須
 			if (name.startsWith("scoremanager.main")) {
 				// ログインされていない場合はログイン画面へリダイレクト
-				User user = (User) req.getSession().getAttribute("user");
-				if (user == null || !user.isAuthenticated()) {
+				if (!Auth.isAuthenticated()) {
 					res.sendRedirect(req.getContextPath() + "/scoremanager/index.jsp");
 					return;
 				}

@@ -1,13 +1,12 @@
 package scoremanager.main;
 
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.Servlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import bean.School;
 import bean.Subject;
@@ -16,14 +15,16 @@ import bean.Test;
 import dao.SubjectDao;
 import dao.TestDao;
 import tool.Action;
+import tool.Auth;
+import tool.ServletUtil;
 
 public class TestRegistExecuteAction extends Action {
 	@Override
 	public void execute(HttpServletRequest req, HttpServletResponse res) throws Exception {
-		HttpSession session = req.getSession();
-		Teacher teacher = (Teacher) session.getAttribute("user");
+		// セッションから教員情報を取得
+		Teacher teacher = Auth.getTeacher();
 		if (teacher == null) {
-			res.sendRedirect(req.getContextPath() + "/login.jsp");
+			ServletUtil.throwError(req, res, "権限がありません");
 			return;
 		}
 

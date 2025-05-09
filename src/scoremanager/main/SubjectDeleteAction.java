@@ -4,20 +4,25 @@ import java.util.LinkedHashMap;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import bean.Subject;
 import bean.Teacher;
 import dao.SubjectDao;
 import tool.Action;
+import tool.Auth;
+import tool.ServletUtil;
 
 public class SubjectDeleteAction extends Action {
 
     @Override
     public void execute(HttpServletRequest req, HttpServletResponse res) throws Exception {
-        // セッションから教師情報を取得
-        HttpSession session = req.getSession();
-        Teacher teacher = (Teacher) session.getAttribute("user");
+		// セッションから教員情報を取得
+		Teacher teacher = Auth.getTeacher();
+		if (teacher == null) {
+			ServletUtil.throwError(req, res, "権限がありません");
+			return;
+		}
+
 
         // 削除対象の科目コードを取得
         String cd = req.getParameter("no");

@@ -8,26 +8,18 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import bean.School;
-import bean.Subject;
-import bean.Teacher;
-import dao.SubjectDao;
+import dao.SchoolDao;
 import tool.Action;
-import tool.Auth;
-import tool.ServletUtil;
 
-public class SubjectCreateAction extends Action {
+public class SchoolCreateAction extends Action {
 	@Override
 	public void execute(HttpServletRequest req, HttpServletResponse res) throws Exception {
-		// セッションから教員情報を取得
-		Teacher teacher = Auth.getTeacher();
-		if (teacher == null) {
-			ServletUtil.throwError(req, res, "権限がありません");
-			return;
-		}
+
+		// ここに学校管理者かチェック
 
 		// POST時以外は、そのまま科目登録画面を表示
 		if (!req.getMethod().equals("POST")) {
-			forward(req, res, teacher.getSchool());
+			forward(req, res);
 			return;
 		}
 
@@ -35,22 +27,22 @@ public class SubjectCreateAction extends Action {
 		Map<String, String> errors = new HashMap<>();
 
 		// フォームデータを取得
-		String cd = req.getParameter("cd");// 科目コード
-		String name = req.getParameter("name"); // 科目名
+		String cd = req.getParameter("cd");// 学校コード
+		String name = req.getParameter("name"); // 学校名
 
 		// DAOの呼び出し
-		SubjectDao sDao = new SubjectDao();
+		SchoolDao sDao = new SchoolDao();
 
-		// 科目コードエラー
-		// 科目コードの文字数エラー
+		// エラー一覧
+		// 学校コードの文字数エラー
 		if (cd.length() != 3) {
-			errors.put("subject_cd", "科目コードは3文字で入力してください");
+			errors.put("school_cd", "学校コードは3文字で入力してください");
 
-		// 科目コードの重複エラー
+		// 学校コードの重複エラー
 		} else {
-			Subject subject = sDao.get(cd, teacher.getSchool());
-			if (subject != null) {
-				errors.put("subject_cd", "科目コードが重複しています");
+			School school = sDao.get(cd);
+			if (school != null) {
+				errors.put("school_cd", "学校コードが重複しています");
 			}
 		}
 
@@ -59,24 +51,23 @@ public class SubjectCreateAction extends Action {
 
 			req.setAttribute("errors", errors);
 
-			forward(req, res, teacher.getSchool());
+			forward(req, res);
 			return;
 		}
 
 		// バリデーション通過時は、新しい科目を作成
-		Subject subject = new Subject();
-		subject.setCd(cd);
-		subject.setName(name);
-		subject.setSchool(teacher.getSchool());
+		School school = new School();
+		school.setCd(cd);
+		school.setName(name);
 
-		if (sDao.save(subject)) {
+		if (sDao.save(school)) {
 			// 科目追加して成功ページに飛ぶ
-			req.setAttribute("title", "科目情報登録");
+			req.setAttribute("title", "学校情報登録");
 			req.setAttribute("message", "登録が完了しました");
 
 			LinkedHashMap<String, String> links = new LinkedHashMap<>();
-			links.put("戻る", "SubjectCreate.action");
-			links.put("科目一覧", "SubjectList.action");
+			links.put("戻る", "SchoolCreate.action");
+			links.put("学校一覧", "SchoolList.action");
 			req.setAttribute("links", links);
 
 			req.getRequestDispatcher("/success.jsp").forward(req, res);
@@ -92,9 +83,9 @@ public class SubjectCreateAction extends Action {
 	 * @param school 学校情報
 	 * @throws Exception
 	 */
-	public void forward(HttpServletRequest req, HttpServletResponse res, School school) throws Exception {
+	public void forward(HttpServletRequest req, HttpServletResponse res) throws Exception {
 		// JSPにフォワード
-		req.getRequestDispatcher("subject_create.jsp").forward(req, res);
+		req.getRequestDispatcher("school_create.jsp").forward(req, res);
 	}
 
 }

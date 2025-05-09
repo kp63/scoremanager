@@ -10,6 +10,8 @@ import dao.ClassNumDao;
 import dao.SubjectDao;
 import dao.TestListSubjectDao;
 import tool.Action;
+import tool.Auth;
+import tool.ServletUtil;
 
 public class TestListSubjectExecuteAction extends Action {
 	/** dropdown 用データを req にセット */
@@ -23,6 +25,13 @@ public class TestListSubjectExecuteAction extends Action {
 
 	@Override
 	public void execute(HttpServletRequest req, HttpServletResponse res) throws Exception {
+		// セッションから教員情報を取得
+		Teacher teacher = Auth.getTeacher();
+		if (teacher == null) {
+			ServletUtil.throwError(req, res, "権限がありません");
+			return;
+		}
+
 		req.setCharacterEncoding("UTF-8");
 		prepareDropdown(req);
 
@@ -33,7 +42,7 @@ public class TestListSubjectExecuteAction extends Action {
 			req.setAttribute("subjectError", "入学年度・クラス・科目を選択してください");
 		} else {
 			int entYear = Integer.parseInt(e);
-			School school = ((Teacher)req.getSession().getAttribute("user")).getSchool();
+			School school = teacher.getSchool();
 			Subject subject = new SubjectDao().get(sCd, school);
 			List<TestListSubject> results =
 				new TestListSubjectDao().filter(entYear, c, subject, school);

@@ -7,20 +7,25 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import bean.Student;
 import bean.Teacher;
 import dao.ClassNumDao;
 import dao.StudentDao;
 import tool.Action;
+import tool.Auth;
+import tool.ServletUtil;
 
 public class StudentUpdateAction extends Action {
 	@Override
 	public void execute(HttpServletRequest req, HttpServletResponse res) throws Exception {
-		// セッションから先生の情報を取得
-		HttpSession session = req.getSession();
-		Teacher teacher = (Teacher) session.getAttribute("user");
+		// セッションから教員情報を取得
+		Teacher teacher = Auth.getTeacher();
+		if (teacher == null) {
+			ServletUtil.throwError(req, res, "権限がありません");
+			return;
+		}
+
 
 		// 学生情報を取得
 		String studentNo = req.getParameter("no");
