@@ -13,10 +13,10 @@ public class MenuAction extends Action {
 		HttpSession session = req.getSession();
 
 		if (Auth.isSuperuser()) {
-			session.setAttribute("showSuperExtraData", null);
+			session.setAttribute("showSuperExtraData", true);
 		}
 		if (Auth.isAdminTeacher()) {
-			session.setAttribute("showExtraData", null);
+			session.setAttribute("showExtraData", true);
 		}
 
 		req.getRequestDispatcher("menu.jsp").forward(req, res);

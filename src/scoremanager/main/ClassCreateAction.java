@@ -13,13 +13,18 @@ import bean.School;
 import bean.Teacher;
 import dao.ClassNumDao;
 import tool.Action;
+import tool.Auth;
+import tool.ServletUtil;
 
 public class ClassCreateAction extends Action {
 	@Override
 	public void execute(HttpServletRequest req, HttpServletResponse res) throws Exception {
 		// セッションから先生の情報を取得
-		HttpSession session = req.getSession();
-		Teacher teacher = (Teacher) session.getAttribute("user");
+		Teacher teacher = Auth.getTeacher();
+		if (teacher == null) {
+			ServletUtil.throwError(req, res, "権限がありません");
+			return;
+		}
 
 		// POST時以外は、そのまま登録画面を表示
 		if (!req.getMethod().equals("POST")) {

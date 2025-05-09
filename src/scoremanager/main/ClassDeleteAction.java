@@ -7,19 +7,23 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import bean.ClassNum;
-import bean.School;
 import bean.Teacher;
 import dao.ClassNumDao;
 import dao.SchoolDao;
 import tool.Action;
+import tool.Auth;
+import tool.ServletUtil;
 
 public class ClassDeleteAction extends Action {
 
     @Override
     public void execute(HttpServletRequest req, HttpServletResponse res) throws Exception {
-        // セッションから教師情報を取得
-        HttpSession session = req.getSession();
-        Teacher teacher = (Teacher) session.getAttribute("user");
+		// セッションから教員情報を取得
+		Teacher teacher = Auth.getTeacher();
+		if (teacher == null) {
+			ServletUtil.throwError(req, res, "権限がありません");
+			return;
+		}
 
         ClassNumDao cDao = new ClassNumDao();
         SchoolDao sDao = new SchoolDao();
@@ -28,7 +32,6 @@ public class ClassDeleteAction extends Action {
         String classNumStr = req.getParameter("class_num");
         String schoolCd = req.getParameter("school_cd");
 
-        School school = teacher.getSchool();
         ClassNum class_num = cDao.get(classNumStr, sDao.get(schoolCd));
 
         // POSTでなければ削除確認画面へ

@@ -21,6 +21,7 @@ import tool.ServletUtil;
 public class TestRegistExecuteAction extends Action {
 	@Override
 	public void execute(HttpServletRequest req, HttpServletResponse res) throws Exception {
+		// セッションから教員情報を取得
 		Teacher teacher = Auth.getTeacher();
 		if (teacher == null) {
 			ServletUtil.throwError(req, res, "権限がありません");

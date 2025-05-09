@@ -28,6 +28,7 @@ public class TestRegistAction extends Action {
 	}
 
 	public static void forward(HttpServletRequest req, HttpServletResponse res) throws Exception {
+		// セッションから教員情報を取得
 		Teacher teacher = Auth.getTeacher();
 		if (teacher == null) {
 			ServletUtil.throwError(req, res, "権限がありません");
