@@ -33,7 +33,6 @@ public class TeacherCreateAction extends Action {
         Map<String, String> errors = new HashMap<>();
 
         // フォームデータ(教員情報)を取得
-        String school_cd = req.getParameter("school_cd");
         String id = req.getParameter("id");
         String password = req.getParameter("password");
         String name = req.getParameter("name");
@@ -55,6 +54,7 @@ public class TeacherCreateAction extends Action {
         // バリデーションエラーがある場合は入力画面に戻す
         if (errors.size() > 0) {
             req.setAttribute("errors", errors);
+            //ここで再入力の際も入力内容を保持している
             req.setAttribute("id", id);
             req.setAttribute("password", password);
             req.setAttribute("name",name);
