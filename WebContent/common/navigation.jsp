@@ -24,7 +24,7 @@
 	<%-- クラス管理へのリンク - mb-3で下部マージンを設定 --%>
 	<li class="nav-item mb-3"><a href="${pageContext.request.contextPath}/scoremanager/main/ClassList.action">クラス管理</a></li>
 	</c:if>
-	<c:if test="${sessionScope.showExtraData or sessionScope.showSuperExtraData}">
+	<c:if test="${sessionScope.showExtraData}">
 		<li class="nav-item mb-3"><a href="${pageContext.request.contextPath}/scoremanager/main/TeacherList.action">教員管理</a></li>
 	</c:if>
 
