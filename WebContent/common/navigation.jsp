@@ -2,10 +2,9 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <ul class="nav nav-pills flex-column mb-auto px-4">
-	<c:if test="${not sessionScope.showSuperExtraData}">
 	<%-- メニューへのリンク - my-3で上下マージンを設定 --%>
 	<li class="nav-item my-3"><a href="${pageContext.request.contextPath}/scoremanager/main/Menu.action">メニュー</a></li>
-
+	<c:if test="${not sessionScope.showSuperExtraData}">
 	<%-- 学生管理へのリンク - mb-3で下部マージンを設定 --%>
 	<li class="nav-item mb-3"><a href="${pageContext.request.contextPath}/scoremanager/main/StudentList.action">学生管理</a></li>
 
