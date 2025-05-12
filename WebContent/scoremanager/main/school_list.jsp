@@ -21,6 +21,7 @@
 							<tr>
 								<th>学校コード</th>
 								<th>学校名</th>
+								<th>各学校教員管理</th>
 								<th rows="2"></th>
 							</tr>
 						</thead>
@@ -29,7 +30,7 @@
 								<tr class="align-middle">
 									<td>${school.cd}</td>
 									<td>${school.name}</td>
-
+									<td><a href="TeacherList.action?cd=${school.cd}">教員管理</a>
 									<td><a href="SchoolUpdate.action?no=${school.cd}">変更</a></td>
 									<td><a href="SchoolDelete.action?no=${school.cd}">削除</a></td>
 								</tr>
