@@ -12,9 +12,6 @@ public class MenuAction extends Action {
 	public void execute(HttpServletRequest req, HttpServletResponse res) throws Exception {
 		HttpSession session = req.getSession();
 
-		if (Auth.isSuperuser()) {
-			session.setAttribute("showSuperExtraData", true);
-		}
 		if (Auth.isAdminTeacher()) {
 			session.setAttribute("showExtraData", true);
 		}

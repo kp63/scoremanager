@@ -47,16 +47,10 @@
 			</div>
 			</c:if>
 			<div class="row text-center px-4 fs-3 my-5">
-				<c:if test="${sessionScope.showExtraData or sessionScope.showSuperExtraData}">
+				<c:if test="${sessionScope.showExtraData}">
 					<div class="col d-flex align-items-center justify-content-center mx-2 rounded shadow"
 					style="height: 10rem; background-color: #bdd;">
 						<a href="TeacherList.action">教員管理</a>
-					</div>
-				</c:if>
-				<c:if test="${sessionScope.showSuperExtraData}">
-					<div class="col d-flex align-items-center justify-content-center mx-2 rounded shadow"
-					style="height: 10rem; background-color: #e6b5ec;">
-						<a href="School	List.action">学校管理</a>
 					</div>
 				</c:if>
 			</div>
