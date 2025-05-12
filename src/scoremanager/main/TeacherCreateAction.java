@@ -32,7 +32,13 @@ public class TeacherCreateAction extends Action {
 			Teacher teacher = Auth.getTeacher();
 			schoolCd = teacher.getSchool().getCd();
 		} else if (Auth.isSuperuser()) {
+			// URLのクエリパラメータから学校コードを取得
+			// 学校コードが指定されていない場合は、学校一覧画面にリダイレクト
 			schoolCd = req.getParameter("cd");
+			if (schoolCd == null) {
+				res.sendRedirect(req.getContextPath() + "/scoremanager/main/SchoolList.action");
+				return;
+			}
 		} else {
 			ServletUtil.throwError(req, res, "権限がありません");
 			return;
