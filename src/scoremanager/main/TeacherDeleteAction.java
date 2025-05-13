@@ -4,23 +4,33 @@ import java.util.LinkedHashMap;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import bean.Teacher;
 import dao.TeacherDao;
 import tool.Action;
+import tool.Auth;
+import tool.ServletUtil;
 
 public class TeacherDeleteAction extends Action {
 
     @Override
     public void execute(HttpServletRequest req, HttpServletResponse res) throws Exception {
         // セッションから教師情報を取得
-        HttpSession session = req.getSession();
-        Teacher teacher = (Teacher) session.getAttribute("user");
-        if ("admin".equals(teacher.getRole())) {
-        	req.getRequestDispatcher("/error.jsp");
+    	if (!Auth.isAuthenticated()) {
+			ServletUtil.throwError(req, res, "ログインしてください");
+			return;
 		}
         // 削除対象の教師IDを取得
+        String school_cd;
+		if (Auth.isAdminTeacher()) {
+			Teacher teacher = Auth.getTeacher();
+			school_cd = teacher.getSchool().getCd();
+		} else if (Auth.isSuperuser()) {
+			school_cd = req.getParameter("school_cd");
+		} else {
+			ServletUtil.throwError(req, res, "権限がありません");
+			return;
+		}
         String teacherId = req.getParameter("teacher_id");
 
         // DAOのインスタンスを生成
@@ -42,7 +52,7 @@ public class TeacherDeleteAction extends Action {
             req.setAttribute("message", "削除が完了しました。");
 
             LinkedHashMap<String, String> links = new LinkedHashMap<>();
-            links.put("教師一覧", "TeacherList.action");
+            links.put("教師一覧", "TeacherList.action?cd="+school_cd);
             req.setAttribute("links", links);
 
             req.getRequestDispatcher("/success.jsp").forward(req, res);
@@ -56,6 +66,10 @@ public class TeacherDeleteAction extends Action {
      * 削除確認画面を表示
      */
     private void forward(HttpServletRequest req, HttpServletResponse res, Teacher teacher) throws Exception {
+    	if (Auth.isSuperuser()) {
+    		String school_cd = req.getParameter("school_cd");
+    		req.setAttribute("school_cd", school_cd);
+    	}
         req.setAttribute("teacher_id", teacher.getId());
         if (req.getAttribute("teacher_name") == null) {
             req.setAttribute("teacher_name", teacher.getName());
