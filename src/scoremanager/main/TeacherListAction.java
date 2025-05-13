@@ -47,7 +47,8 @@ public class TeacherListAction extends Action {
 			req.setAttribute("school_name", sDao.get(cd).getName());
 			// 学校コード
 			req.setAttribute("school_cd", cd);
-
+			// 新規作成のリンク
+			req.setAttribute("create_link", "TeacherCreate.action?cd="+cd);
 			// JSPにフォワード
 			req.getRequestDispatcher("teacher_list.jsp").forward(req, res);
 
@@ -67,7 +68,8 @@ public class TeacherListAction extends Action {
 			req.setAttribute("school_name", teacher.getSchool().getName());
 			// 学校コード
 			req.setAttribute("school_cd", teacher.getSchool().getCd());
-
+			// 新規作成のリンク
+			req.setAttribute("create_link", "TeacherCreate.action");
 			// JSPにフォワード
 			req.getRequestDispatcher("teacher_list.jsp").forward(req, res);
 
