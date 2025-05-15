@@ -28,7 +28,4 @@
 		<li class="nav-item mb-3"><a href="${pageContext.request.contextPath}/scoremanager/main/TeacherList.action">教員管理</a></li>
 	</c:if>
 
-	<c:if test="${sessionScope.showSuperExtraData}">
-		<li class="nav-item mb-3"><a href="${pageContext.request.contextPath}/scoremanager/main/SchoolList.action">学校管理</a></li>
-	</c:if>
 </ul>
