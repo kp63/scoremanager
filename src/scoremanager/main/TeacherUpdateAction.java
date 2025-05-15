@@ -7,6 +7,8 @@ import javax.servlet.http.HttpSession;
 import bean.Teacher;
 import dao.TeacherDao;
 import tool.Action;
+import tool.Auth;
+import tool.ServletUtil;
 
 /**
  * 教員情報更新アクション
@@ -14,15 +16,25 @@ import tool.Action;
 public class TeacherUpdateAction extends Action {
 	@Override
 	public void execute(HttpServletRequest req, HttpServletResponse res) throws Exception {
-		HttpSession session = req.getSession();
-		Teacher loginUser = (Teacher) session.getAttribute("user");
-		if (loginUser == null || !"admin".equals(loginUser.getId())) {
-			req.getRequestDispatcher("/error.jsp").forward(req, res);
+		if (!Auth.isAuthenticated()) {
+			ServletUtil.throwError(req, res, "ログインしてください");
+			return;
+		}
+		// スーパーユーザーか教員かによって、学校コードの取得方法を変える
+		// 	管理者教員なら: 教員情報から学校コードを取得
+		// 	スーパーユーザーなら: URLから学校コードを取得
+		String school_cd;
+		if (Auth.isAdminTeacher()) {
+			Teacher teacher = Auth.getTeacher();
+			school_cd = teacher.getSchool().getCd();
+		} else if (Auth.isSuperuser()) {
+			school_cd = req.getParameter("cd");
+		} else {
+			ServletUtil.throwError(req, res, "権限がありません");
 			return;
 		}
 
 		// リクエストパラメータを直接取得
-		String school_cd   = req.getParameter("school_cd");
 		String teacher_id  = req.getParameter("teacher_id");
 		String name        = req.getParameter("name");
 		String password    = req.getParameter("password");
@@ -46,7 +58,8 @@ public class TeacherUpdateAction extends Action {
 		// school 情報は既存データから再取得
 		t.setSchool(dao.get(teacher_id).getSchool());
 		dao.save(t);
-
+		HttpSession session = req.getSession();
+		Teacher loginUser = (Teacher) session.getAttribute("user");
 		// 更新対象がセッションのログインユーザーなら、セッション上のオブジェクトを直接更新
 		if (loginUser.getId().equals(teacher_id)) {
 			// セッションの Teacher インスタンスを書き換え

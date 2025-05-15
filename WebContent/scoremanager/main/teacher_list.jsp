@@ -9,14 +9,14 @@
 
 	<c:param name="content">
 		<section class="me-4">
-			<h2 class="h3 mb-3 fw-normal bg-secondary bg-opacity-10 py-2 px-4">教師管理</h2>
-			<h3>${school_name}の教師一覧</h3>
+			<h2 class="h3 mb-3 fw-normal bg-secondary bg-opacity-10 py-2 px-4">教員管理</h2>
+			<h3>${school_name}の教員一覧</h3>
 			<div class="my-2 text-end px-4">
-				<a href="TeacherCreate.action">新規登録</a>
+				<a href="${create_link}">新規登録</a>
 			</div>
 
-
-
+			<c:choose>
+				<c:when test="${teacher_set.size() > 0}">
 					<table class="table table-hover">
 						<thead>
 							<tr>
@@ -32,11 +32,19 @@
 									<td>${teacher.id}</td>
 									<td>${teacher.name}</td>
 									<td><a href="TeacherUpdate.action?school_cd=${school_cd}&teacher_id=${teacher.id}">更新</a></td>
-									<td><a href="TeacherDelete.action?teacher_id=${teacher.id}">削除</a></td>
+									<td><a href="TeacherDelete.action?school_cd=${school_cd}&teacher_id=${teacher.id}">削除</a></td>
 								</tr>
 							</c:forEach>
 						</tbody>
 					</table>
+
+					</c:when>
+				<c:otherwise>
+					<div>
+						教員情報が存在しませんでした
+					</div>
+				</c:otherwise>
+			</c:choose>
 
 		</section>
 	</c:param>

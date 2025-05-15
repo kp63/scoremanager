@@ -9,7 +9,7 @@
 	<c:param name="content">
 		<section class="me-4">
 			<h2 class="h3 mb-3 fw-normal bg-secondary bg-opacity-10 py-2 px-4">教員削除</h2>
-			<form action="TeacherDelete.action?teacher_id=${teacher_id}" method="POST" class="px-2">
+			<form action="TeacherDelete.action?school_cd=${school_cd }&teacher_id=${teacher_id}" method="POST" class="px-2">
 				<div>
 					<p>「<strong>${teacher_name}</strong>」を削除してもよろしいですか</p>
 				</div>
