@@ -137,6 +137,30 @@ public class StudentDao extends Dao {
 		return students;
 	}
 
+	public List<Student> filter(School school, String name) throws Exception {
+		// SELECT文をセット1
+		StringBuilder sql = new StringBuilder("select * from student");
+		List<Object> params = new ArrayList<>();
+
+		// 条件をWHEREで絞り込み
+		// SQLインジェクション対策の為、SQL文とパラメータを分けて定義
+		sql.append(" where school_cd = ?");
+		params.add(school.getCd());
+
+		if (name != null){
+			sql.append(" and name like ?");
+			params.add("%" + name.trim() + "%");
+		}
+
+		// ORDER BYでソートを定義
+		sql.append(" order by no asc");
+
+		// 実行してStudentリストを取得
+		List<Student> students = executeQuery(sql.toString(), params);
+
+		return students;
+	}
+
 	public boolean save(Student student) throws Exception {
 		try (Connection con = this.getConnection()) {
 			// 引数の学生IDから該当する学生が居るか否かでINSERTかUPDATEを判断

@@ -39,6 +39,7 @@ public class StudentListAction extends Action {
 		String entYearStr = req.getParameter("f1");
 		String classNum = req.getParameter("f2");
 		String isAttendStr = req.getParameter("f3");
+		String name = req.getParameter("student-name");
 
 		// フォームデータをキャスト
 		int entYear = 0;
@@ -70,7 +71,13 @@ public class StudentListAction extends Action {
 		List<String> classNumsSet = cNumDao.filter(teacher.getSchool());
 
 		// フィルタリング
-		if (entYear != 0 && !classNum.equals("0")) {
+		if (name != null && !name.equals("")){
+			if (entYear != 0 || !classNum.equals("0") || isAttend){
+				errors.put("f1", "※名前検索をする場合ほかの条件は適用されません");
+				req.setAttribute("errors", errors);
+			}
+			students = sDao.filter(teacher.getSchool(), name);
+		} else if (entYear != 0 && !classNum.equals("0")) {
 			students = sDao.filter(teacher.getSchool(), entYear, classNum, isAttend);
 		} else if (entYear != 0 && classNum.equals("0")) {
 			students = sDao.filter(teacher.getSchool(), entYear, isAttend);
