@@ -18,24 +18,79 @@ public class Auth {
 		return req.getContextPath() + "/login.jsp";
 	}
 
+
+	//////////////////////////////////
+	/// 基本メソッド
+	//////////////////////////////////
+
+	/**
+	 * 認証されたユーザーを取得するメソッド
+	 * @return User 認証されたユーザー、認証されていない場合はnull
+	 * @throws Exception
+	 */
+	public static User getUser() {
+		User user = (User) req.getSession().getAttribute("user");
+		if (user == null) {
+			return null;
+		}
+
+		return user;
+	}
+
+	/**
+	 * 認証されたユーザーのタイプを取得するメソッド
+	 * @return String "teacher" | "superuser" | null
+	 * @throws Exception
+	 */
+	public static String getUserType() {
+		String userType = (String) req.getSession().getAttribute("user_type");
+		if (userType == null) {
+			return null;
+		}
+
+		return userType;
+	}
+
 	/**
 	 * 認証されているかどうかを確認するメソッド
 	 * @return boolean 認証されている場合はtrue、そうでない場合はfalse
 	 */
 	public static boolean isAuthenticated() {
-		// セッションの取得
-		HttpSession session = req.getSession();
-
-		// ユーザータイプがnullの場合は認証されていないとみなす
-		String userType = (String) session.getAttribute("user_type");
-		if (userType == null) {
+		// セッションからユーザー情報を取得し、認証されているかどうかをチェック
+		String userType = getUserType();
+		User user = getUser();
+		if (userType == null || user == null) {
 			return false;
 		}
 
-		// セッションからユーザー情報を取得し、が認証されているかどうかをチェック
-		User user = (User) session.getAttribute("user");
-		return user != null && user.isAuthenticated();
+		// 認証されているかどうかをチェック
+		return user.isAuthenticated();
 	}
+
+	/**
+	 * 認証されたユーザーのIDを取得するメソッド
+	 * @return String ユーザーのID、認証されていない場合はnull
+	 * @throws Exception
+	 */
+	public static String getUserId() {
+		if (!isAuthenticated()) {
+			return null;
+		}
+
+		User user = (User) getUser();
+		if (user instanceof Teacher) {
+			return ((Teacher) user).getId();
+		} else if (user instanceof Superuser) {
+			return ((Superuser) user).getId();
+		}
+
+		return null;
+	}
+
+
+	//////////////////////////////////
+	/// 応用isメソッド
+	//////////////////////////////////
 
 	/**
 	 * 教員かどうかを確認するメソッド
@@ -46,16 +101,7 @@ public class Auth {
 			return false;
 		}
 
-		String userType = (String) req.getSession().getAttribute("user_type");
-		if (userType == null) {
-			return false;
-		}
-
-		if ("teacher".equals(userType)) {
-			return true;
-		}
-
-		return false;
+		return "teacher".equals(getUserType());
 	}
 
 	/**
@@ -67,9 +113,12 @@ public class Auth {
 			return false;
 		}
 
-		// セッションから教員情報を取得し、管理者権限を持っているかどうかをチェック
-		Teacher user = (Teacher) req.getSession().getAttribute("user");
-		return user != null && "admin".equals(user.getRole());
+		Teacher teacher = getTeacher();
+		if (teacher == null) {
+			return false;
+		}
+
+		return "admin".equals(teacher.getRole());
 	}
 
 	/**
@@ -81,17 +130,13 @@ public class Auth {
 			return false;
 		}
 
-		String userType = (String) req.getSession().getAttribute("user_type");
-		if (userType == null) {
-			return false;
-		}
-
-		if ("superuser".equals(userType)) {
-			return true;
-		}
-
-		return false;
+		return "superuser".equals(getUserType());
 	}
+
+
+	//////////////////////////////////
+	/// 応用メソッド
+	//////////////////////////////////
 
 	/**
 	 * 教員情報を取得するメソッド
@@ -111,7 +156,7 @@ public class Auth {
 	 * @return Superuser スーパーユーザー情報、認証されていない場合またはスーパーユーザーでない場合はnull
 	 * @throws Exception
 	 */
-	public static Superuser getSuperuser() throws Exception {
+	public static Superuser getSuperuser() {
 		if (!isSuperuser()) {
 			return null;
 		}
@@ -119,13 +164,4 @@ public class Auth {
 		return (Superuser) req.getSession().getAttribute("user");
 	}
 
-	public static void guard(String role) throws Exception {
-		if (role == null) {
-			return;
-		}
-
-		if (!Auth.isAuthenticated()) {
-			throw new Exception("認証してください");
-		}
-	}
 }
